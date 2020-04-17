@@ -14,3 +14,7 @@
 Finding out the provider also determines how you create an CreditCard object.
 - Strategy here is because the way I save all data is exactly the same, only the way I read and write are different according to the file extensions.
 - Singleton here doesn't really matter at this moment, but if I want to extend my code to maybe read multiple files, I won't need to rebuild the handler anymore.
+
+#### Tools
+The project is built and run using IntelliJ IDEA with Maven enabled.
+Both project and module bytecode version are set to 8.
