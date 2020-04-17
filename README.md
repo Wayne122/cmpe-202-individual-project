@@ -18,3 +18,6 @@ Finding out the provider also determines how you create an CreditCard object.
 #### Tools
 The project is built and run using IntelliJ IDEA with Maven enabled.
 Both project and module bytecode version are set to 8.
+
+##### Be advised
+Because I did not use any third party parser to parse input files, instead, I parsed them by counting length of each line of input, you will need to make sure the input file structured exactly the same as the sample input file.
