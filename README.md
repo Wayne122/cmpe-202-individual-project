@@ -6,7 +6,7 @@
 - Strategy
 
 #### Structure
-![](https://www.lucidchart.com/publicSegments/view/f87b279b-5960-4429-9ca9-a4b0444f0739/image.jpeg)
+![](https://www.lucidchart.com/publicSegments/view/c09f9086-5a14-4836-924b-d4f95cc65661/image.png)
 - Singleton is used in HandlerGetter
 
 #### Reasons
