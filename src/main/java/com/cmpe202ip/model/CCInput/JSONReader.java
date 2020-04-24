@@ -14,21 +14,32 @@ public class JSONReader implements ReadingStrategy {
   public ArrayList<CreditCard> read(String filePath) throws IOException {
     ArrayList<CreditCard> creditCards = new ArrayList<>();
     BufferedReader br = new BufferedReader(new FileReader(filePath));
-    String line = "";
+    String line;
     String jsonSplitBy = ":";
     CCRecordHandler handler = HandlerGetter.getInstance();
-    br.readLine();
+    String cardNumber = "";
+    String expirationDate = "";
+    String cardHolderName = "";
     while ((line = br.readLine()) != null) {
       if (line.compareTo("]") == 0) break;
-      line = br.readLine().split(jsonSplitBy)[1];
-      String cardNumber = line.substring(1, line.length()-1);
-      line = br.readLine().split(jsonSplitBy)[1];
-      String expirationDate = line.substring(2, line.length()-2);
-      line = br.readLine().split(jsonSplitBy)[1];
-      String cardHolderName = line.substring(2, line.length()-1);
-      CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
-      creditCards.add(creditCard);
-      br.readLine();
+      else if (line.contains("CardNumber")) {
+        line = line.split(jsonSplitBy)[1];
+        cardNumber = line.replace(" ", "").replace(",", "");
+      }
+      else if (line.contains("ExpirationDate")) {
+        line = line.split(jsonSplitBy)[1];
+        expirationDate = line.replace(" ", "").replace(",", "").replace("\"", "");
+      }
+      else if (line.contains("NameOfCardholder")) {
+        line = line.split(jsonSplitBy)[1];
+        cardHolderName = line.replace(" ", "").replace(",", "").replace("\"", "");
+      } else if (line.replace(" ", "").compareTo("},") == 0 || line.replace(" ", "").compareTo("}") == 0) {
+        CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
+        creditCards.add(creditCard);
+        cardNumber = "";
+        expirationDate = "";
+        cardHolderName = "";
+      }
     }
     br.close();
     return creditCards;
