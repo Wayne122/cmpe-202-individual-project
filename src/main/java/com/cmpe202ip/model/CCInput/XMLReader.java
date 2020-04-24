@@ -14,21 +14,29 @@ public class XMLReader implements ReadingStrategy {
   public ArrayList<CreditCard> read(String filePath) throws IOException {
     ArrayList<CreditCard> creditCards = new ArrayList<>();
     BufferedReader br = new BufferedReader(new FileReader(filePath));
-    String line = "";
+    String line;
+    String xmlSplitBy = "[<>]";
     CCRecordHandler handler = HandlerGetter.getInstance();
-    br.readLine();
-    br.readLine();
+    String cardNumber = "";
+    String expirationDate = "";
+    String cardHolderName = "";
     while ((line = br.readLine()) != null) {
       if (line.compareTo("</root>") == 0) break;
-      line = br.readLine();
-      String cardNumber = line.substring(16, line.length()-13);
-      line = br.readLine();
-      String expirationDate = line.substring(20, line.length()-17);
-      line = br.readLine();
-      String cardHolderName = line.substring(22, line.length()-19);
-      CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
-      creditCards.add(creditCard);
-      br.readLine();
+      else if (line.contains("CardNumber")) {
+        cardNumber = line.replace(" ", "").split(xmlSplitBy)[2];
+      }
+      else if (line.contains("ExpirationDate")) {
+        expirationDate = line.replace(" ", "").split(xmlSplitBy)[2];
+      }
+      else if (line.contains("NameOfCardholder")) {
+        cardHolderName = line.replace(" ", "").split(xmlSplitBy)[2];
+      } else if (line.replace(" ", "").compareTo("</row>") == 0) {
+        CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
+        creditCards.add(creditCard);
+        cardNumber = "";
+        expirationDate = "";
+        cardHolderName = "";
+      }
     }
     br.close();
     return creditCards;
