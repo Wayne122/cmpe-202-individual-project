@@ -16,5 +16,5 @@ Finding out the provider also determines how you create an CreditCard object. Wh
 - Singleton here doesn't really matter at this moment, but if I want to extend my code to maybe read multiple files, I won't need to rebuild the handler anymore.
 
 #### Tools
-The project is built and run using IntelliJ IDEA with Maven enabled.
+The project is built and run using IntelliJ IDEA with Maven enabled. Maven is used only for testing.
 Both project and module bytecode version are set to 8.
