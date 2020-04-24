@@ -22,23 +22,23 @@ public class JSONReader implements ReadingStrategy {
     String cardHolderName = "";
     while ((line = br.readLine()) != null) {
       if (line.compareTo("]") == 0) break;
-      else if (line.contains("CardNumber")) {
-        line = line.split(jsonSplitBy)[1];
-        cardNumber = line.replace(" ", "").replace(",", "");
-      }
-      else if (line.contains("ExpirationDate")) {
-        line = line.split(jsonSplitBy)[1];
-        expirationDate = line.replace(" ", "").replace(",", "").replace("\"", "");
-      }
-      else if (line.contains("NameOfCardholder")) {
-        line = line.split(jsonSplitBy)[1];
-        cardHolderName = line.replace(" ", "").replace(",", "").replace("\"", "");
-      } else if (line.replace(" ", "").compareTo("},") == 0 || line.replace(" ", "").compareTo("}") == 0) {
-        CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
-        creditCards.add(creditCard);
-        cardNumber = "";
-        expirationDate = "";
-        cardHolderName = "";
+      else {
+        line = line.replace(" ", "").replace("\t", "").replace(",", "").replace("\"", "");
+        if (line.contains("CardNumber")) {
+          cardNumber = line.split(jsonSplitBy)[1];
+        }
+        else if (line.contains("ExpirationDate")) {
+          expirationDate = line.split(jsonSplitBy)[1];
+        }
+        else if (line.contains("NameOfCardholder")) {
+          cardHolderName = line.split(jsonSplitBy)[1];
+        } else if (line.compareTo("}") == 0) {
+          CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
+          creditCards.add(creditCard);
+          cardNumber = "";
+          expirationDate = "";
+          cardHolderName = "";
+        }
       }
     }
     br.close();

@@ -22,20 +22,23 @@ public class XMLReader implements ReadingStrategy {
     String cardHolderName = "";
     while ((line = br.readLine()) != null) {
       if (line.compareTo("</root>") == 0) break;
-      else if (line.contains("CardNumber")) {
-        cardNumber = line.replace(" ", "").split(xmlSplitBy)[2];
-      }
-      else if (line.contains("ExpirationDate")) {
-        expirationDate = line.replace(" ", "").split(xmlSplitBy)[2];
-      }
-      else if (line.contains("NameOfCardholder")) {
-        cardHolderName = line.replace(" ", "").split(xmlSplitBy)[2];
-      } else if (line.replace(" ", "").compareTo("</row>") == 0) {
-        CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
-        creditCards.add(creditCard);
-        cardNumber = "";
-        expirationDate = "";
-        cardHolderName = "";
+      else {
+        String[] splitLine = line.replace(" ", "").replace("\t", "").split(xmlSplitBy);
+        if (line.contains("CardNumber")) {
+          cardNumber = splitLine[2];
+        }
+        else if (line.contains("ExpirationDate")) {
+          expirationDate = splitLine[2];
+        }
+        else if (line.contains("NameOfCardholder")) {
+          cardHolderName = splitLine[2];
+        } else if (line.replace(" ", "").replace("\t", "").compareTo("</row>") == 0) {
+          CreditCard creditCard = handler.handleRequest(cardNumber, expirationDate, cardHolderName);
+          creditCards.add(creditCard);
+          cardNumber = "";
+          expirationDate = "";
+          cardHolderName = "";
+        }
       }
     }
     br.close();
