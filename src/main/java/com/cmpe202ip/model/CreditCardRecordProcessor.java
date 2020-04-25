@@ -20,19 +20,16 @@ public class CreditCardRecordProcessor {
   public CreditCardRecordProcessor(String _inputFilePath, String _outputFilePath) {
     this.inputFilePath = _inputFilePath;
     this.outputFilePath = _outputFilePath;
-    if (this.inputFilePath.endsWith(".csv")) {
-      readingStrategy = new CSVReader();
-      writingStrategy = new CSVWriter();
-    }
-    else if (this.inputFilePath.endsWith(".json")) {
-      readingStrategy = new JSONReader();
-      writingStrategy = new JSONWriter();
-    }
-    else if (this.inputFilePath.endsWith(".xml")) {
-      readingStrategy = new XMLReader();
-      writingStrategy = new XMLWriter();
-    }
-    else System.out.println("Unexpected File Type!");
+
+    if (this.inputFilePath.endsWith(".csv")) readingStrategy = new CSVReader();
+    else if (this.inputFilePath.endsWith(".json")) readingStrategy = new JSONReader();
+    else if (this.inputFilePath.endsWith(".xml")) readingStrategy = new XMLReader();
+    else System.out.println("Unexpected Input File Type!");
+
+    if (this.outputFilePath.endsWith(".csv")) writingStrategy = new CSVWriter();
+    else if (this.outputFilePath.endsWith(".json")) writingStrategy = new JSONWriter();
+    else if (this.outputFilePath.endsWith(".xml")) writingStrategy = new XMLWriter();
+    else System.out.println("Unexpected Output File Type!");
   }
 
   public void process() throws IOException {
